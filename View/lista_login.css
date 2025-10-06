@@ -1,0 +1,13 @@
+.user-table th, .user-table td {
+    padding: 14px 10px;
+    border-bottom: 1px solid #eaf3fb;
+    text-align: left;
+}
+.user-table th {
+    background: #5bc0de;
+    color: #fff;
+    font-weight: 600;
+}
+.user-table tr:last-child td {
+    border-bottom: none;
+}
