@@ -44,6 +44,10 @@ include 'Core/router.php';
                 <a href="View/cadastro_usuario.php" class="btn-cadastro">
                     Não tem cadastro? Cadastre-se
                 </a>
+                <br><br>
+                <a href="View/lista_login.php" class="btn-cadastro" style="background:#5bc0de;">
+                    Ver lista de usuários
+                </a>
             </div>
         </div>
         <div class="login-footer">

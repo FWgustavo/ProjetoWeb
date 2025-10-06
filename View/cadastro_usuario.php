@@ -16,7 +16,7 @@
         <i class="fa fa-user-plus"></i> Cadastro de Usuário
       </div>
       <div class="panel-body">
-        <form class="form-horizontal" autocomplete="off">
+        <form class="form-horizontal" autocomplete="off" method="post" action="salvar_usuario.php" enctype="multipart/form-data">
           <!-- Avatar -->
           <div class="form-section text-center">
             <div class="avatar-preview" id="avatarPreview">
