@@ -8,36 +8,77 @@ use Exception;
 final class Produto extends Model
 {
     public ?int $Id = null;
-    public ?string $Nome = null;
-    public ?float $Valor = null;
-    public ?int $Quantidade = 0;
-    public ?int $QuantidadeMin = 0;
 
-    public function validate(): void
+    public ?string $Nome
     {
-        if (strlen($this->Nome) < 2)
-            throw new Exception("O nome do produto deve ter no mínimo 2 caracteres.");
+        set
+        {
+            if(strlen($value) < 2)
+                throw new Exception("Nome deve ter no mínimo 2 caracteres.");
+
+            $this->Nome = $value;
+        }
+
+        get => $this->Nome ?? null;
     }
 
-    public function save(): Produto
+    public ?float $Valor
     {
-        $this->validate();
-        return (new ProdutoDAO())->save($this);
+        set
+        {
+            if($value < 0)
+                throw new Exception("Valor não pode ser negativo.");
+
+            $this->Valor = $value;
+        }
+
+        get => $this->Valor ?? 0.0;
     }
 
-    public function getById(int $id): ?Produto
+    public ?int $Quantidade
     {
-        return (new ProdutoDAO())->selectById($id);
+        set
+        {
+            if($value < 0)
+                throw new Exception("Quantidade não pode ser negativa.");
+
+            $this->Quantidade = $value;
+        }
+
+        get => $this->Quantidade ?? 0;
     }
 
-    public function getAllRows(): array
+    public ?int $QuantidadeMin
     {
-        $this->rows = (new ProdutoDAO())->select();
+        set
+        {
+            if($value < 0)
+                throw new Exception("Quantidade mínima não pode ser negativa.");
+
+            $this->QuantidadeMin = $value;
+        }
+
+        get => $this->QuantidadeMin ?? 0;
+    }
+
+    function save() : Produto
+    {
+        return new ProdutoDAO()->save($this);
+    }
+
+    function getById(int $id) : ?Produto
+    {
+        return new ProdutoDAO()->selectById($id);
+    }
+
+    function getAllRows() : array
+    {
+        $this->rows = new ProdutoDAO()->select();
         return $this->rows;
     }
 
-    public function delete(int $id): bool
+    function delete(int $id) : bool
     {
-        return (new ProdutoDAO())->delete($id);
+        return new ProdutoDAO()->delete($id);
     }
 }

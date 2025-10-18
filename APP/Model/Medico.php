@@ -8,46 +8,74 @@ use Exception;
 final class Medico extends Model
 {
     public ?int $Id = null;
-    public ?string $Nome = null;
-    public ?string $CRM = null;
-    public ?string $Especialidade = null;
-    public ?string $Telefone = null;
-    public ?string $Email = null;
 
-    public function validate(): void
+    public ?string $Nome
     {
-        if (strlen($this->Nome) < 3)
-            throw new Exception("O nome deve ter no mínimo 3 caracteres.");
+        set
+        {
+            if(strlen($value) < 3)
+                throw new Exception("Nome deve ter no mínimo 3 caracteres.");
 
-        if (strlen($this->CRM) < 3)
-            throw new Exception("O CRM deve ter no mínimo 3 caracteres.");
+            $this->Nome = $value;
+        }
 
-        if (strlen($this->Especialidade) < 3)
-            throw new Exception("A especialidade deve ter no mínimo 3 caracteres.");
-
-        if (strlen($this->Telefone) < 3)
-            throw new Exception("O telefone deve ter no mínimo 3 caracteres.");
+        get => $this->Nome ?? null;
     }
 
-    public function save(): Medico
+    public ?string $CRM
     {
-        $this->validate();
-        return (new MedicoDAO())->save($this);
+        set
+        {
+            if(empty($value))
+                throw new Exception("CRM é obrigatório.");
+
+            $this->CRM = $value;
+        }
+
+        get => $this->CRM ?? null;
     }
 
-    public function getById(int $id): ?Medico
+    public ?string $Especialidade
     {
-        return (new MedicoDAO())->selectById($id);
+        get => $this->Especialidade ?? null;
     }
 
-    public function getAllRows(): array
+    public ?string $Telefone
     {
-        $this->rows = (new MedicoDAO())->select();
+        get => $this->Telefone ?? null;
+    }
+
+    public ?string $Email
+    {
+        set
+        {
+            if(!empty($value) && !filter_var($value, FILTER_VALIDATE_EMAIL))
+                throw new Exception("Email inválido.");
+
+            $this->Email = $value;
+        }
+
+        get => $this->Email ?? null;
+    }
+
+    function save() : Medico
+    {
+        return new MedicoDAO()->save($this);
+    }
+
+    function getById(int $id) : ?Medico
+    {
+        return new MedicoDAO()->selectById($id);
+    }
+
+    function getAllRows() : array
+    {
+        $this->rows = new MedicoDAO()->select();
         return $this->rows;
     }
 
-    public function delete(int $id): bool
+    function delete(int $id) : bool
     {
-        return (new MedicoDAO())->delete($id);
+        return new MedicoDAO()->delete($id);
     }
 }

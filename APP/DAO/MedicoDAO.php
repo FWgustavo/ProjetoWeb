@@ -3,7 +3,6 @@
 namespace App\DAO;
 
 use App\Model\Medico;
-use PDO;
 
 final class MedicoDAO extends DAO
 {
@@ -12,16 +11,16 @@ final class MedicoDAO extends DAO
         parent::__construct();
     }
 
-    public function save(Medico $model): Medico
+    public function save(Medico $model) : Medico
     {
         return ($model->Id == null) ? $this->insert($model) : $this->update($model);
     }
 
-    public function insert(Medico $model): Medico
+    public function insert(Medico $model) : Medico
     {
-        $sql = "INSERT INTO Medico (nome, crm, especialidade, telefone, email)
+        $sql = "INSERT INTO medico (nome, crm, especialidade, telefone, email) 
                 VALUES (?, ?, ?, ?, ?)";
-
+        
         $stmt = parent::$conexao->prepare($sql);
         $stmt->bindValue(1, $model->Nome);
         $stmt->bindValue(2, $model->CRM);
@@ -31,15 +30,15 @@ final class MedicoDAO extends DAO
         $stmt->execute();
 
         $model->Id = parent::$conexao->lastInsertId();
-
+        
         return $model;
     }
 
-    public function update(Medico $model): Medico
+    public function update(Medico $model) : Medico
     {
-        $sql = "UPDATE Medico 
-                   SET nome = ?, crm = ?, especialidade = ?, telefone = ?, email = ?
-                 WHERE id = ?";
+        $sql = "UPDATE medico 
+                SET nome=?, crm=?, especialidade=?, telefone=?, email=? 
+                WHERE id=?";
 
         $stmt = parent::$conexao->prepare($sql);
         $stmt->bindValue(1, $model->Nome);
@@ -49,13 +48,14 @@ final class MedicoDAO extends DAO
         $stmt->bindValue(5, $model->Email);
         $stmt->bindValue(6, $model->Id);
         $stmt->execute();
-
+        
         return $model;
     }
 
-    public function selectById(int $id): ?Medico
+    public function selectById(int $id) : ?Medico
     {
-        $sql = "SELECT * FROM Medico WHERE id = ?";
+        $sql = "SELECT * FROM medico WHERE id=?";
+
         $stmt = parent::$conexao->prepare($sql);
         $stmt->bindValue(1, $id);
         $stmt->execute();
@@ -63,18 +63,20 @@ final class MedicoDAO extends DAO
         return $stmt->fetchObject("App\Model\Medico");
     }
 
-    public function select(): array
+    public function select() : array
     {
-        $sql = "SELECT * FROM Medico";
+        $sql = "SELECT * FROM medico ORDER BY nome";
+
         $stmt = parent::$conexao->prepare($sql);
         $stmt->execute();
 
-        return $stmt->fetchAll(PDO::FETCH_CLASS, "App\Model\Medico");
+        return $stmt->fetchAll(DAO::FETCH_CLASS, "App\Model\Medico");
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id) : bool
     {
-        $sql = "DELETE FROM Medico WHERE id = ?";
+        $sql = "DELETE FROM medico WHERE id=?";
+
         $stmt = parent::$conexao->prepare($sql);
         $stmt->bindValue(1, $id);
         return $stmt->execute();

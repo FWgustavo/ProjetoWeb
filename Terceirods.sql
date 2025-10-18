@@ -56,3 +56,5 @@ CREATE TABLE IF NOT EXISTS Servico (
   descricao TEXT,
   valor DECIMAL(10,2)
 );
+
+insert into Usuario(nome,email,senha) values('Caio', 'caio@caio.com',sha1('123'));

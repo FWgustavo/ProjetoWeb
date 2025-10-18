@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Controller;
-
 use App\Model\Model;
 
 abstract class Controller

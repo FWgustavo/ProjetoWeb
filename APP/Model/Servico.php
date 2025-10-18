@@ -8,35 +8,56 @@ use Exception;
 final class Servico extends Model
 {
     public ?int $Id = null;
-    public ?string $Nome = null;
-    public ?string $Descricao = null;
-    public ?float $Valor = null;
 
-    public function validate(): void
+    public ?string $Nome
     {
-        if (strlen($this->Nome) < 2)
-            throw new Exception("O nome do serviço deve ter no mínimo 2 caracteres.");
+        set
+        {
+            if(strlen($value) < 3)
+                throw new Exception("Nome deve ter no mínimo 3 caracteres.");
+
+            $this->Nome = $value;
+        }
+
+        get => $this->Nome ?? null;
     }
 
-    public function save(): Servico
+    public ?string $Descricao
     {
-        $this->validate();
-        return (new ServicoDAO())->save($this);
+        get => $this->Descricao ?? null;
     }
 
-    public function getById(int $id): ?Servico
+    public ?float $Valor
     {
-        return (new ServicoDAO())->selectById($id);
+        set
+        {
+            if($value < 0)
+                throw new Exception("Valor não pode ser negativo.");
+
+            $this->Valor = $value;
+        }
+
+        get => $this->Valor ?? 0.0;
     }
 
-    public function getAllRows(): array
+    function save() : Servico
     {
-        $this->rows = (new ServicoDAO())->select();
+        return new ServicoDAO()->save($this);
+    }
+
+    function getById(int $id) : ?Servico
+    {
+        return new ServicoDAO()->selectById($id);
+    }
+
+    function getAllRows() : array
+    {
+        $this->rows = new ServicoDAO()->select();
         return $this->rows;
     }
 
-    public function delete(int $id): bool
+    function delete(int $id) : bool
     {
-        return (new ServicoDAO())->delete($id);
+        return new ServicoDAO()->delete($id);
     }
 }

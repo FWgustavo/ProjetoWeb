@@ -1,22 +1,42 @@
-<div class="sidebar" id="sidebar" style="background:#2c3e50; color:white; height:100vh; width:60px; transition:width 0.3s; position:fixed; z-index:2; overflow-x:hidden; padding-top:20px;">
-    <div class="toggle-btn text-center mb-3" onclick="toggleSidebar()" style="cursor:pointer; font-size:20px;">&#9776;</div>
-    <a href="/" class="d-block px-3 py-2 text-white text-decoration-none">Inicio</a>
-    <a href="/usuario" class="d-block px-3 py-2 text-white text-decoration-none">Usuário</a>
-    <a href="/medico" class="d-block px-3 py-2 text-white text-decoration-none">Médico</a>
-    <a href="/paciente" class="d-block px-3 py-2 text-white text-decoration-none">Paciente</a>
-    <a href="/produto" class="d-block px-3 py-2 text-white text-decoration-none">Produto</a>
-    <a href="/servico" class="d-block px-3 py-2 text-white text-decoration-none">Serviço</a>
-    <a href="/logout" class="d-block px-3 py-2 text-white text-decoration-none">Sair</a>
-</div>
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <h2>Clínica</h2>
+    </div>
 
-<script>
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.toggle('expanded');
-        if(sidebar.classList.contains('expanded')) {
-            sidebar.style.width = '180px';
-        } else {
-            sidebar.style.width = '60px';
-        }
-    }
-</script>
+    <nav>
+        <a href="/" class="menu-item">
+            <span class="menu-icon">🏠</span>
+            <span class="menu-text">Inicio</span>
+        </a>
+
+        <a href="/usuario" class="menu-item">
+            <span class="menu-icon">👥</span>
+            <span class="menu-text">Usuários</span>
+        </a>
+
+        <a href="/medico" class="menu-item">
+            <span class="menu-icon">👨‍⚕️</span>
+            <span class="menu-text">Médicos</span>
+        </a>
+
+        <a href="/paciente" class="menu-item">
+            <span class="menu-icon">🏥</span>
+            <span class="menu-text">Pacientes</span>
+        </a>
+
+        <a href="/produto" class="menu-item">
+            <span class="menu-icon">💊</span>
+            <span class="menu-text">Produtos</span>
+        </a>
+
+        <a href="/servico" class="menu-item">
+            <span class="menu-icon">🩺</span>
+            <span class="menu-text">Serviços</span>
+        </a>
+
+        <a href="/logout" class="menu-item" style="position: absolute; bottom: 0; width: 100%;">
+            <span class="menu-icon">🚪</span>
+            <span class="menu-text">Sair</span>
+        </a>
+    </nav>
+</aside>

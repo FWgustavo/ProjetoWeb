@@ -8,37 +8,66 @@ use Exception;
 final class Paciente extends Model
 {
     public ?int $Id = null;
-    public ?string $Nome = null;
-    public ?string $Cpf = null;
-    public ?string $Telefone = null;
-    public ?string $Endereco = null;
-    public ?string $Data_Nascimento = null;
 
-    public function validate(): void
+    public ?string $Nome
     {
-        if (strlen($this->Nome) < 3)
-            throw new Exception("O nome deve ter no mínimo 3 caracteres.");
+        set
+        {
+            if(strlen($value) < 3)
+                throw new Exception("Nome deve ter no mínimo 3 caracteres.");
+
+            $this->Nome = $value;
+        }
+
+        get => $this->Nome ?? null;
     }
 
-    public function save(): Paciente
+    public ?string $CPF
     {
-        $this->validate();
-        return (new PacienteDAO())->save($this);
+        set
+        {
+            if(!empty($value) && strlen($value) < 11)
+                throw new Exception("CPF deve ter 11 caracteres.");
+
+            $this->CPF = $value;
+        }
+
+        get => $this->CPF ?? null;
     }
 
-    public function getById(int $id): ?Paciente
+    public ?string $Telefone
     {
-        return (new PacienteDAO())->selectById($id);
+        get => $this->Telefone ?? null;
     }
 
-    public function getAllRows(): array
+    public ?string $Endereco
     {
-        $this->rows = (new PacienteDAO())->select();
+        get => $this->Endereco ?? null;
+    }
+
+    public ?string $Data_Nascimento
+    {
+        get => $this->Data_Nascimento ?? null;
+    }
+
+    function save() : Paciente
+    {
+        return new PacienteDAO()->save($this);
+    }
+
+    function getById(int $id) : ?Paciente
+    {
+        return new PacienteDAO()->selectById($id);
+    }
+
+    function getAllRows() : array
+    {
+        $this->rows = new PacienteDAO()->select();
         return $this->rows;
     }
 
-    public function delete(int $id): bool
+    function delete(int $id) : bool
     {
-        return (new PacienteDAO())->delete($id);
+        return new PacienteDAO()->delete($id);
     }
 }

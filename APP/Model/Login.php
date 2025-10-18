@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Model;
-
 use App\DAO\LoginDAO;
 
 final class Login

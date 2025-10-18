@@ -3,7 +3,6 @@
 namespace App\DAO;
 
 use App\Model\Produto;
-use PDO;
 
 final class ProdutoDAO extends DAO
 {
@@ -12,16 +11,16 @@ final class ProdutoDAO extends DAO
         parent::__construct();
     }
 
-    public function save(Produto $model): Produto
+    public function save(Produto $model) : Produto
     {
         return ($model->Id == null) ? $this->insert($model) : $this->update($model);
     }
 
-    public function insert(Produto $model): Produto
+    public function insert(Produto $model) : Produto
     {
-        $sql = "INSERT INTO Produto (nome, valor, quantidade, quantidadeMin)
+        $sql = "INSERT INTO produto (nome, valor, quantidade, quantidadeMin) 
                 VALUES (?, ?, ?, ?)";
-
+        
         $stmt = parent::$conexao->prepare($sql);
         $stmt->bindValue(1, $model->Nome);
         $stmt->bindValue(2, $model->Valor);
@@ -30,14 +29,15 @@ final class ProdutoDAO extends DAO
         $stmt->execute();
 
         $model->Id = parent::$conexao->lastInsertId();
+        
         return $model;
     }
 
-    public function update(Produto $model): Produto
+    public function update(Produto $model) : Produto
     {
-        $sql = "UPDATE Produto 
-                   SET nome=?, valor=?, quantidade=?, quantidadeMin=?
-                 WHERE id=?";
+        $sql = "UPDATE produto 
+                SET nome=?, valor=?, quantidade=?, quantidadeMin=? 
+                WHERE id=?";
 
         $stmt = parent::$conexao->prepare($sql);
         $stmt->bindValue(1, $model->Nome);
@@ -46,30 +46,35 @@ final class ProdutoDAO extends DAO
         $stmt->bindValue(4, $model->QuantidadeMin);
         $stmt->bindValue(5, $model->Id);
         $stmt->execute();
-
+        
         return $model;
     }
 
-    public function selectById(int $id): ?Produto
+    public function selectById(int $id) : ?Produto
     {
-        $sql = "SELECT * FROM Produto WHERE id=?";
+        $sql = "SELECT * FROM produto WHERE id=?";
+
         $stmt = parent::$conexao->prepare($sql);
         $stmt->bindValue(1, $id);
         $stmt->execute();
+
         return $stmt->fetchObject("App\Model\Produto");
     }
 
-    public function select(): array
+    public function select() : array
     {
-        $sql = "SELECT * FROM Produto";
+        $sql = "SELECT * FROM produto ORDER BY nome";
+
         $stmt = parent::$conexao->prepare($sql);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_CLASS, "App\Model\Produto");
+
+        return $stmt->fetchAll(DAO::FETCH_CLASS, "App\Model\Produto");
     }
 
-    public function delete(int $id): bool
+    public function delete(int $id) : bool
     {
-        $sql = "DELETE FROM Produto WHERE id=?";
+        $sql = "DELETE FROM produto WHERE id=?";
+
         $stmt = parent::$conexao->prepare($sql);
         $stmt->bindValue(1, $id);
         return $stmt->execute();

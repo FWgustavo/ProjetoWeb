@@ -4,8 +4,8 @@ use App\Controller\{
     InicialController,
     LoginController,
     UsuarioController,
-    PacienteController,
     MedicoController,
+    PacienteController,
     ProdutoController,
     ServicoController
 };
@@ -14,16 +14,12 @@ $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 switch($url)
 {
-    /**
-     * ROTA INICIAL
-     */
     case '/':
         InicialController::index();
     break;
 
-
     /**
-     * ROTAS DE LOGIN
+     * Rotas para Login
      */
     case '/login':
         LoginController::index();
@@ -34,23 +30,22 @@ switch($url)
     break;
 
     /**
-     * ROTAS DE PACIENTE
+     * Rotas para Usuários
      */
-    case '/paciente':
-        PacienteController::index();
+    case '/usuario':
+        UsuarioController::index();
     break;
 
-    case '/paciente/cadastro':
-        PacienteController::cadastro();
+    case '/usuario/cadastro':
+        UsuarioController::cadastro();
     break;
 
-    case '/paciente/delete':
-        PacienteController::delete();
+    case '/usuario/delete':
+        UsuarioController::delete();
     break;
-
 
     /**
-     * ROTAS DE MÉDICO
+     * Rotas para Médicos
      */
     case '/medico':
         MedicoController::index();
@@ -64,9 +59,23 @@ switch($url)
         MedicoController::delete();
     break;
 
+    /**
+     * Rotas para Pacientes
+     */
+    case '/paciente':
+        PacienteController::index();
+    break;
+
+    case '/paciente/cadastro':
+        PacienteController::cadastro();
+    break;
+
+    case '/paciente/delete':
+        PacienteController::delete();
+    break;
 
     /**
-     * ROTAS DE PRODUTO
+     * Rotas para Produtos
      */
     case '/produto':
         ProdutoController::index();
@@ -80,9 +89,8 @@ switch($url)
         ProdutoController::delete();
     break;
 
-
     /**
-     * ROTAS DE SERVIÇO
+     * Rotas para Serviços
      */
     case '/servico':
         ServicoController::index();
@@ -96,26 +104,8 @@ switch($url)
         ServicoController::delete();
     break;
 
-    /**
-     * ROTAS DE USUÁRIO
-     */
-
-    case '/usuario':
-        UsuarioController::index();
-    break;
-    case '/usuario/cadastro':
-        UsuarioController::cadastro();
-    break;
-    case '/usuario/delete':
-        UsuarioController::delete();
-    break;
-
-
-    /**
-     * ROTA PADRÃO (404)
-     */
     default:
-        http_response_code(404);
-        echo "<h1>Página não encontrada</h1>";
+        header("HTTP/1.0 404 Not Found");
+        echo "Página não encontrada";
     break;
 }
