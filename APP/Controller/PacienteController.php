@@ -31,18 +31,27 @@ final class PacienteController extends Controller
 
         try {
             if(parent::isPost()) {
-                $model->Id = !empty($_POST['id']) ? $_POST['id'] : null;
-                $model->Nome = $_POST['nome'];
-                $model->CPF = $_POST['cpf'];
-                $model->Telefone = $_POST['telefone'];
-                $model->Endereco = $_POST['endereco'];
-                $model->Data_Nascimento = $_POST['data_nascimento'];
+                $model->Id = !empty($_POST['id']) ? (int)$_POST['id'] : null;
+                $model->Nome = $_POST['nome'] ?? '';
+                $model->CPF = $_POST['cpf'] ?? '';
+                $model->Telefone = $_POST['telefone'] ?? '';
+                $model->Endereco = $_POST['endereco'] ?? '';
+                $model->Data_Nascimento = $_POST['data_nascimento'] ?? '';
+                
                 $model->save();
 
                 parent::redirect("/paciente");
+                exit;
             } else {
-                if(isset($_GET['id'])) {
-                    $model = $model->getById((int) $_GET['id']);
+                if(isset($_GET['id']) && !empty($_GET['id'])) {
+                    $id = (int)$_GET['id'];
+                    $modelBuscado = $model->getById($id);
+                    
+                    if($modelBuscado !== null) {
+                        $model = $modelBuscado;
+                    } else {
+                        $model->setError("Paciente não encontrado!");
+                    }
                 }
             }
         } catch(Exception $e) {
@@ -59,11 +68,23 @@ final class PacienteController extends Controller
         $model = new Paciente();
 
         try {
-            $model->delete((int) $_GET['id']);
-            parent::redirect("/paciente");
+            if(isset($_GET['id']) && !empty($_GET['id'])) {
+                $id = (int)$_GET['id'];
+                $model->delete($id);
+                parent::redirect("/paciente");
+                exit;
+            } else {
+                $model->setError("ID não fornecido para exclusão!");
+            }
         } catch(Exception $e) {
             $model->setError("Ocorreu um erro ao excluir o paciente:");
             $model->setError($e->getMessage());
+            
+            try {
+                $model->getAllRows();
+            } catch(Exception $e2) {
+                $model->setError("Erro ao buscar lista: " . $e2->getMessage());
+            }
         }
 
         parent::render('Paciente/lista_paciente.php', $model);

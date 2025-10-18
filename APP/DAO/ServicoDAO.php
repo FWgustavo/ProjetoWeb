@@ -66,7 +66,8 @@ final class ServicoDAO extends DAO
         $stmt = parent::$conexao->prepare($sql);
         $stmt->execute();
 
-        return $stmt->fetchAll(DAO::FETCH_CLASS, "App\Model\Servico");
+        // CORREÇÃO: Mudar de DAO::FETCH_CLASS para PDO::FETCH_CLASS
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, "App\Model\Servico");
     }
 
     public function delete(int $id) : bool

@@ -8,76 +8,102 @@ use Exception;
 final class Produto extends Model
 {
     public ?int $Id = null;
+    private ?string $_nome = null;
+    private ?float $_valor = 0.0;
+    private ?int $_quantidade = 0;
+    private ?int $_quantidadeMin = 0;
 
-    public ?string $Nome
+    public function __set($name, $value)
     {
-        set
-        {
-            if(strlen($value) < 2)
-                throw new Exception("Nome deve ter no mínimo 2 caracteres.");
-
-            $this->Nome = $value;
+        $setter = 'set' . $name;
+        if (method_exists($this, $setter)) {
+            $this->$setter($value);
+        } else {
+            $this->$name = $value;
         }
-
-        get => $this->Nome ?? null;
     }
 
-    public ?float $Valor
+    public function __get($name)
     {
-        set
-        {
-            if($value < 0)
-                throw new Exception("Valor não pode ser negativo.");
-
-            $this->Valor = $value;
+        $getter = 'get' . $name;
+        if (method_exists($this, $getter)) {
+            return $this->$getter();
         }
-
-        get => $this->Valor ?? 0.0;
+        return $this->$name ?? null;
     }
 
-    public ?int $Quantidade
+    public function setNome(?string $value): void
     {
-        set
-        {
-            if($value < 0)
-                throw new Exception("Quantidade não pode ser negativa.");
-
-            $this->Quantidade = $value;
-        }
-
-        get => $this->Quantidade ?? 0;
+        if (!empty($value) && strlen($value) < 2)
+            throw new Exception("Nome deve ter no mínimo 2 caracteres.");
+        
+        $this->_nome = $value;
     }
 
-    public ?int $QuantidadeMin
+    public function getNome(): ?string
     {
-        set
-        {
-            if($value < 0)
-                throw new Exception("Quantidade mínima não pode ser negativa.");
-
-            $this->QuantidadeMin = $value;
-        }
-
-        get => $this->QuantidadeMin ?? 0;
+        return $this->_nome;
     }
 
-    function save() : Produto
+    public function setValor($value): void
+    {
+        $valor = floatval($value);
+        if ($valor < 0)
+            throw new Exception("Valor não pode ser negativo.");
+        
+        $this->_valor = $valor;
+    }
+
+    public function getValor(): ?float
+    {
+        return $this->_valor ?? 0.0;
+    }
+
+    public function setQuantidade($value): void
+    {
+        $qtd = intval($value);
+        if ($qtd < 0)
+            throw new Exception("Quantidade não pode ser negativa.");
+        
+        $this->_quantidade = $qtd;
+    }
+
+    public function getQuantidade(): ?int
+    {
+        return $this->_quantidade ?? 0;
+    }
+
+    public function setQuantidadeMin($value): void
+    {
+        $qtd = intval($value);
+        if ($qtd < 0)
+            throw new Exception("Quantidade mínima não pode ser negativa.");
+        
+        $this->_quantidadeMin = $qtd;
+    }
+
+    public function getQuantidadeMin(): ?int
+    {
+        return $this->_quantidadeMin ?? 0;
+    }
+
+    function save(): Produto
     {
         return new ProdutoDAO()->save($this);
     }
 
-    function getById(int $id) : ?Produto
+    function getById(int $id): ?Produto
     {
         return new ProdutoDAO()->selectById($id);
     }
 
-    function getAllRows() : array
+    function getAllRows(): array
     {
         $this->rows = new ProdutoDAO()->select();
         return $this->rows;
     }
 
-    function delete(int $id) : bool
+    function delete(int $id): bool
     {
         return new ProdutoDAO()->delete($id);
     }

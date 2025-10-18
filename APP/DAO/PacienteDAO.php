@@ -3,6 +3,7 @@
 namespace App\DAO;
 
 use App\Model\Paciente;
+use PDO;
 
 final class PacienteDAO extends DAO
 {
@@ -21,7 +22,7 @@ final class PacienteDAO extends DAO
         $sql = "INSERT INTO paciente (nome, cpf, telefone, endereco, data_nascimento) 
                 VALUES (?, ?, ?, ?, ?)";
         
-        $stmt = parent::$conexao->prepare($sql);
+        $stmt = self::$conexao->prepare($sql);
         $stmt->bindValue(1, $model->Nome);
         $stmt->bindValue(2, $model->CPF);
         $stmt->bindValue(3, $model->Telefone);
@@ -29,7 +30,7 @@ final class PacienteDAO extends DAO
         $stmt->bindValue(5, $model->Data_Nascimento);
         $stmt->execute();
 
-        $model->Id = parent::$conexao->lastInsertId();
+        $model->Id = self::$conexao->lastInsertId();
         
         return $model;
     }
@@ -40,7 +41,7 @@ final class PacienteDAO extends DAO
                 SET nome=?, cpf=?, telefone=?, endereco=?, data_nascimento=? 
                 WHERE id=?";
 
-        $stmt = parent::$conexao->prepare($sql);
+        $stmt = self::$conexao->prepare($sql);
         $stmt->bindValue(1, $model->Nome);
         $stmt->bindValue(2, $model->CPF);
         $stmt->bindValue(3, $model->Telefone);
@@ -56,28 +57,29 @@ final class PacienteDAO extends DAO
     {
         $sql = "SELECT * FROM paciente WHERE id=?";
 
-        $stmt = parent::$conexao->prepare($sql);
+        $stmt = self::$conexao->prepare($sql);
         $stmt->bindValue(1, $id);
         $stmt->execute();
 
-        return $stmt->fetchObject("App\Model\Paciente");
+        $result = $stmt->fetchObject("App\\Model\\Paciente");
+        return $result !== false ? $result : null;
     }
 
     public function select() : array
     {
         $sql = "SELECT * FROM paciente ORDER BY nome";
 
-        $stmt = parent::$conexao->prepare($sql);
+        $stmt = self::$conexao->prepare($sql);
         $stmt->execute();
 
-        return $stmt->fetchAll(DAO::FETCH_CLASS, "App\Model\Paciente");
+        return $stmt->fetchAll(PDO::FETCH_CLASS, "App\\Model\\Paciente");
     }
 
     public function delete(int $id) : bool
     {
         $sql = "DELETE FROM paciente WHERE id=?";
 
-        $stmt = parent::$conexao->prepare($sql);
+        $stmt = self::$conexao->prepare($sql);
         $stmt->bindValue(1, $id);
         return $stmt->execute();
     }

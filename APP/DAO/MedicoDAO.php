@@ -70,7 +70,8 @@ final class MedicoDAO extends DAO
         $stmt = parent::$conexao->prepare($sql);
         $stmt->execute();
 
-        return $stmt->fetchAll(DAO::FETCH_CLASS, "App\Model\Medico");
+        // CORREÇÃO: Mudar de DAO::FETCH_CLASS para PDO::FETCH_CLASS
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, "App\Model\Medico");
     }
 
     public function delete(int $id) : bool

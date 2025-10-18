@@ -183,7 +183,7 @@
 
     <div class="main-content">
         <div class="top-bar">
-            <h1>Bem-vindo ao Sistema Biblioteca</h1>
+            <h1>Bem-vindo ao Sistema Clínica</h1>
             <div class="user-info">
                 <span>👤 Usuário</span>
             </div>

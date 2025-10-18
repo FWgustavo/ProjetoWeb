@@ -31,17 +31,26 @@ final class ProdutoController extends Controller
 
         try {
             if(parent::isPost()) {
-                $model->Id = !empty($_POST['id']) ? $_POST['id'] : null;
-                $model->Nome = $_POST['nome'];
-                $model->Valor = $_POST['valor'];
-                $model->Quantidade = $_POST['quantidade'];
-                $model->QuantidadeMin = $_POST['quantidadeMin'];
+                $model->Id = !empty($_POST['id']) ? (int)$_POST['id'] : null;
+                $model->Nome = $_POST['nome'] ?? '';
+                $model->Valor = $_POST['valor'] ?? 0;
+                $model->Quantidade = $_POST['quantidade'] ?? 0;
+                $model->QuantidadeMin = $_POST['quantidadeMin'] ?? 0;
+                
                 $model->save();
 
                 parent::redirect("/produto");
+                exit;
             } else {
-                if(isset($_GET['id'])) {
-                    $model = $model->getById((int) $_GET['id']);
+                if(isset($_GET['id']) && !empty($_GET['id'])) {
+                    $id = (int)$_GET['id'];
+                    $modelBuscado = $model->getById($id);
+                    
+                    if($modelBuscado !== null) {
+                        $model = $modelBuscado;
+                    } else {
+                        $model->setError("Produto não encontrado!");
+                    }
                 }
             }
         } catch(Exception $e) {
@@ -58,11 +67,23 @@ final class ProdutoController extends Controller
         $model = new Produto();
 
         try {
-            $model->delete((int) $_GET['id']);
-            parent::redirect("/produto");
+            if(isset($_GET['id']) && !empty($_GET['id'])) {
+                $id = (int)$_GET['id'];
+                $model->delete($id);
+                parent::redirect("/produto");
+                exit;
+            } else {
+                $model->setError("ID não fornecido para exclusão!");
+            }
         } catch(Exception $e) {
             $model->setError("Ocorreu um erro ao excluir o produto:");
             $model->setError($e->getMessage());
+            
+            try {
+                $model->getAllRows();
+            } catch(Exception $e2) {
+                $model->setError("Erro ao buscar lista: " . $e2->getMessage());
+            }
         }
 
         parent::render('Produto/lista_produto.php', $model);

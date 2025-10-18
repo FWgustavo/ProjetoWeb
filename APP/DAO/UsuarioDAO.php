@@ -3,6 +3,7 @@
 namespace App\DAO;
 
 use App\Model\Usuario;
+use PDO;
 
 final class UsuarioDAO extends DAO
 {
@@ -20,13 +21,13 @@ final class UsuarioDAO extends DAO
     {
         $sql = "INSERT INTO usuario (nome, email, senha) VALUES (?, ?, sha1(?))";
         
-        $stmt = parent::$conexao->prepare($sql);
+        $stmt = self::$conexao->prepare($sql);
         $stmt->bindValue(1, $model->Nome);
         $stmt->bindValue(2, $model->Email);
         $stmt->bindValue(3, $model->Senha);
         $stmt->execute();
 
-        $model->Id = parent::$conexao->lastInsertId();
+        $model->Id = self::$conexao->lastInsertId();
         
         return $model;
     }
@@ -35,14 +36,14 @@ final class UsuarioDAO extends DAO
     {
         if(!empty($model->Senha)) {
             $sql = "UPDATE usuario SET nome=?, email=?, senha=sha1(?) WHERE id=?";
-            $stmt = parent::$conexao->prepare($sql);
+            $stmt = self::$conexao->prepare($sql);
             $stmt->bindValue(1, $model->Nome);
             $stmt->bindValue(2, $model->Email);
             $stmt->bindValue(3, $model->Senha);
             $stmt->bindValue(4, $model->Id);
         } else {
             $sql = "UPDATE usuario SET nome=?, email=? WHERE id=?";
-            $stmt = parent::$conexao->prepare($sql);
+            $stmt = self::$conexao->prepare($sql);
             $stmt->bindValue(1, $model->Nome);
             $stmt->bindValue(2, $model->Email);
             $stmt->bindValue(3, $model->Id);
@@ -57,28 +58,29 @@ final class UsuarioDAO extends DAO
     {
         $sql = "SELECT id, nome, email, '' as senha FROM usuario WHERE id=?";
 
-        $stmt = parent::$conexao->prepare($sql);
+        $stmt = self::$conexao->prepare($sql);
         $stmt->bindValue(1, $id);
         $stmt->execute();
 
-        return $stmt->fetchObject("App\Model\Usuario");
+        $result = $stmt->fetchObject("App\\Model\\Usuario");
+        return $result !== false ? $result : null;
     }
 
     public function select() : array
     {
         $sql = "SELECT id, nome, email, '' as senha FROM usuario ORDER BY nome";
 
-        $stmt = parent::$conexao->prepare($sql);
+        $stmt = self::$conexao->prepare($sql);
         $stmt->execute();
 
-        return $stmt->fetchAll(DAO::FETCH_CLASS, "App\Model\Usuario");
+        return $stmt->fetchAll(PDO::FETCH_CLASS, "App\\Model\\Usuario");
     }
 
     public function delete(int $id) : bool
     {
         $sql = "DELETE FROM usuario WHERE id=?";
 
-        $stmt = parent::$conexao->prepare($sql);
+        $stmt = self::$conexao->prepare($sql);
         $stmt->bindValue(1, $id);
         return $stmt->execute();
     }

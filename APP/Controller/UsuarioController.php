@@ -31,16 +31,33 @@ final class UsuarioController extends Controller
 
         try {
             if(parent::isPost()) {
-                $model->Id = !empty($_POST['id']) ? $_POST['id'] : null;
-                $model->Nome = $_POST['nome'];
-                $model->Email = $_POST['email'];
-                $model->Senha = $_POST['senha'];
+                $model->Id = !empty($_POST['id']) ? (int)$_POST['id'] : null;
+                $model->Nome = $_POST['nome'] ?? '';
+                $model->Email = $_POST['email'] ?? '';
+                
+                // Só atribui senha se não estiver vazia
+                $senha = $_POST['senha'] ?? '';
+                if(!empty($senha)) {
+                    $model->Senha = $senha;
+                } elseif($model->Id === null) {
+                    // Se for novo usuário, senha é obrigatória
+                    throw new Exception("Senha é obrigatória para novos usuários!");
+                }
+                
                 $model->save();
 
                 parent::redirect("/usuario");
+                exit;
             } else {
-                if(isset($_GET['id'])) {
-                    $model = $model->getById((int) $_GET['id']);
+                if(isset($_GET['id']) && !empty($_GET['id'])) {
+                    $id = (int)$_GET['id'];
+                    $modelBuscado = $model->getById($id);
+                    
+                    if($modelBuscado !== null) {
+                        $model = $modelBuscado;
+                    } else {
+                        $model->setError("Usuário não encontrado!");
+                    }
                 }
             }
         } catch(Exception $e) {
@@ -57,11 +74,23 @@ final class UsuarioController extends Controller
         $model = new Usuario();
 
         try {
-            $model->delete((int) $_GET['id']);
-            parent::redirect("/usuario");
+            if(isset($_GET['id']) && !empty($_GET['id'])) {
+                $id = (int)$_GET['id'];
+                $model->delete($id);
+                parent::redirect("/usuario");
+                exit;
+            } else {
+                $model->setError("ID não fornecido para exclusão!");
+            }
         } catch(Exception $e) {
             $model->setError("Ocorreu um erro ao excluir o usuário:");
             $model->setError($e->getMessage());
+            
+            try {
+                $model->getAllRows();
+            } catch(Exception $e2) {
+                $model->setError("Erro ao buscar lista: " . $e2->getMessage());
+            }
         }
 
         parent::render('Usuario/lista_usuario.php', $model);

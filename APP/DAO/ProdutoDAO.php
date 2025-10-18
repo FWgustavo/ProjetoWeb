@@ -68,7 +68,8 @@ final class ProdutoDAO extends DAO
         $stmt = parent::$conexao->prepare($sql);
         $stmt->execute();
 
-        return $stmt->fetchAll(DAO::FETCH_CLASS, "App\Model\Produto");
+        // CORREÇÃO: Mudar de DAO::FETCH_CLASS para PDO::FETCH_CLASS
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, "App\Model\Produto");
     }
 
     public function delete(int $id) : bool
