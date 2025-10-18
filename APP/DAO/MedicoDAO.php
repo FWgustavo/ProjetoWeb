@@ -54,23 +54,25 @@ final class MedicoDAO extends DAO
 
     public function selectById(int $id) : ?Medico
     {
-        $sql = "SELECT * FROM medico WHERE id=?";
+        $sql = "SELECT id as Id, nome as Nome, crm as CRM, especialidade as Especialidade, 
+                       telefone as Telefone, email as Email FROM medico WHERE id=?";
 
         $stmt = parent::$conexao->prepare($sql);
         $stmt->bindValue(1, $id);
         $stmt->execute();
 
-        return $stmt->fetchObject("App\Model\Medico");
+        $result = $stmt->fetchObject("App\Model\Medico");
+        return $result !== false ? $result : null;
     }
 
     public function select() : array
     {
-        $sql = "SELECT * FROM medico ORDER BY nome";
+        $sql = "SELECT id as Id, nome as Nome, crm as CRM, especialidade as Especialidade, 
+                       telefone as Telefone, email as Email FROM medico ORDER BY nome";
 
         $stmt = parent::$conexao->prepare($sql);
         $stmt->execute();
 
-        // CORREÇÃO: Mudar de DAO::FETCH_CLASS para PDO::FETCH_CLASS
         return $stmt->fetchAll(\PDO::FETCH_CLASS, "App\Model\Medico");
     }
 

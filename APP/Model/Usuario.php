@@ -26,31 +26,6 @@ final class Usuario extends Model
         return $this->_nome;
     }
 
-    public function __set($name, $value)
-    {
-        if ($name === 'Nome') {
-            $this->setNome($value);
-        } elseif ($name === 'Email') {
-            $this->setEmail($value);
-        } elseif ($name === 'Senha') {
-            $this->setSenha($value);
-        } else {
-            $this->$name = $value;
-        }
-    }
-
-    public function __get($name)
-    {
-        if ($name === 'Nome') {
-            return $this->getNome();
-        } elseif ($name === 'Email') {
-            return $this->getEmail();
-        } elseif ($name === 'Senha') {
-            return $this->getSenha();
-        }
-        return null;
-    }
-
     // ======== Email ========
     public function setEmail(?string $value): void
     {
@@ -84,8 +59,35 @@ final class Usuario extends Model
         return $this->_senha;
     }
 
-    // ======== Métodos CRUD ========
+    // ======== Magic Methods ========
+    public function __set($name, $value)
+    {
+        if ($name === 'Id') {
+            $this->Id = $value;
+        } elseif ($name === 'Nome') {
+            $this->setNome($value);
+        } elseif ($name === 'Email') {
+            $this->setEmail($value);
+        } elseif ($name === 'Senha') {
+            $this->setSenha($value);
+        }
+    }
 
+    public function __get($name)
+    {
+        if ($name === 'Id') {
+            return $this->Id;
+        } elseif ($name === 'Nome') {
+            return $this->getNome();
+        } elseif ($name === 'Email') {
+            return $this->getEmail();
+        } elseif ($name === 'Senha') {
+            return $this->getSenha();
+        }
+        return null;
+    }
+
+    // ======== Métodos CRUD ========
     function save(): Usuario
     {
         return (new UsuarioDAO())->save($this);

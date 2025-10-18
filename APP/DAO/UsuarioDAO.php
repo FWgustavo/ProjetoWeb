@@ -56,7 +56,7 @@ final class UsuarioDAO extends DAO
 
     public function selectById(int $id) : ?Usuario
     {
-        $sql = "SELECT id, nome, email, '' as senha FROM usuario WHERE id=?";
+        $sql = "SELECT id as Id, nome as Nome, email as Email, '' as Senha FROM usuario WHERE id=?";
 
         $stmt = self::$conexao->prepare($sql);
         $stmt->bindValue(1, $id);
@@ -68,7 +68,7 @@ final class UsuarioDAO extends DAO
 
     public function select() : array
     {
-        $sql = "SELECT id, nome, email, '' as senha FROM usuario ORDER BY nome";
+        $sql = "SELECT id as Id, nome as Nome, email as Email, '' as Senha FROM usuario ORDER BY nome";
 
         $stmt = self::$conexao->prepare($sql);
         $stmt->execute();

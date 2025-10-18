@@ -55,7 +55,9 @@ final class PacienteDAO extends DAO
 
     public function selectById(int $id) : ?Paciente
     {
-        $sql = "SELECT * FROM paciente WHERE id=?";
+        $sql = "SELECT id as Id, nome as Nome, cpf as CPF, telefone as Telefone, 
+                       endereco as Endereco, data_nascimento as Data_Nascimento 
+                FROM paciente WHERE id=?";
 
         $stmt = self::$conexao->prepare($sql);
         $stmt->bindValue(1, $id);
@@ -67,7 +69,9 @@ final class PacienteDAO extends DAO
 
     public function select() : array
     {
-        $sql = "SELECT * FROM paciente ORDER BY nome";
+        $sql = "SELECT id as Id, nome as Nome, cpf as CPF, telefone as Telefone, 
+                       endereco as Endereco, data_nascimento as Data_Nascimento 
+                FROM paciente ORDER BY nome";
 
         $stmt = self::$conexao->prepare($sql);
         $stmt->execute();

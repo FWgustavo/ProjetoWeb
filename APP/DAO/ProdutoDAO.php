@@ -52,23 +52,25 @@ final class ProdutoDAO extends DAO
 
     public function selectById(int $id) : ?Produto
     {
-        $sql = "SELECT * FROM produto WHERE id=?";
+        $sql = "SELECT id as Id, nome as Nome, valor as Valor, quantidade as Quantidade, 
+                       quantidadeMin as QuantidadeMin FROM produto WHERE id=?";
 
         $stmt = parent::$conexao->prepare($sql);
         $stmt->bindValue(1, $id);
         $stmt->execute();
 
-        return $stmt->fetchObject("App\Model\Produto");
+        $result = $stmt->fetchObject("App\Model\Produto");
+        return $result !== false ? $result : null;
     }
 
     public function select() : array
     {
-        $sql = "SELECT * FROM produto ORDER BY nome";
+        $sql = "SELECT id as Id, nome as Nome, valor as Valor, quantidade as Quantidade, 
+                       quantidadeMin as QuantidadeMin FROM produto ORDER BY nome";
 
         $stmt = parent::$conexao->prepare($sql);
         $stmt->execute();
 
-        // CORREÇÃO: Mudar de DAO::FETCH_CLASS para PDO::FETCH_CLASS
         return $stmt->fetchAll(\PDO::FETCH_CLASS, "App\Model\Produto");
     }
 
