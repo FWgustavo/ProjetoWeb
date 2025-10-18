@@ -262,26 +262,14 @@
                             <tr>
                                 <td><?= $paciente->Id ?></td>
                                 <td>
-                                    <a href="/paciente/cadastro?id=<?= $paciente->Id ?>" class="action-link">
                                         <?= htmlspecialchars($paciente->Nome) ?>
-                                    </a>
                                 </td>
                                 <td>
-                                    <?php if(!empty($paciente->CPF)): ?>
-                                        <span class="badge badge-cpf"><?= htmlspecialchars($paciente->CPF) ?></span>
-                                    <?php else: ?>
-                                        <span style="color: #cbd5e0;">Não informado</span>
-                                    <?php endif; ?>
+                                        <?= htmlspecialchars($paciente->cpf) ?>
                                 </td>
                                 <td><?= htmlspecialchars($paciente->Telefone ?? '-') ?></td>
                                 <td>
-                                    <?php 
-                                    if(!empty($paciente->Data_Nascimento)) {
-                                        echo date('d/m/Y', strtotime($paciente->Data_Nascimento));
-                                    } else {
-                                        echo '-';
-                                    }
-                                    ?>
+                                        <?= htmlspecialchars($paciente->Data_Nascimento) ?>
                                 </td>
                                 <td>
                                     <a href="/paciente/cadastro?id=<?= $paciente->Id ?>" class="action-link">✏️ Editar</a>

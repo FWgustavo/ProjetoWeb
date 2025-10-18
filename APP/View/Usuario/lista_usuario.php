@@ -265,9 +265,7 @@
                                         <span class="user-avatar">
                                             <?= strtoupper(substr($usuario->Nome, 0, 1)) ?>
                                         </span>
-                                        <a href="/usuario/cadastro?id=<?= $usuario->Id ?>" class="action-link">
                                             <?= htmlspecialchars($usuario->Nome) ?>
-                                        </a>
                                     </div>
                                 </td>
                                 <td><?= htmlspecialchars($usuario->Email) ?></td>

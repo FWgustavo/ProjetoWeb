@@ -251,9 +251,7 @@
                             <tr>
                                 <td><?= $medico->Id ?></td>
                                 <td>
-                                    <a href="/medico/cadastro?id=<?= $medico->Id ?>" class="action-link">
                                         <?= htmlspecialchars($medico->Nome) ?>
-                                    </a>
                                 </td>
                                 <td><?= htmlspecialchars($medico->CRM) ?></td>
                                 <td><?= htmlspecialchars($medico->Especialidade ?? '-') ?></td>

@@ -16,7 +16,7 @@ final class Paciente extends Model
 
     public function __set($name, $value)
     {
-        $setter = 'set' . str_replace('_', '', $name);
+        $setter = 'set' . $name;
         if (method_exists($this, $setter)) {
             $this->$setter($value);
         } else {
@@ -26,7 +26,7 @@ final class Paciente extends Model
 
     public function __get($name)
     {
-        $getter = 'get' . str_replace('_', '', $name);
+        $getter = 'get' . $name;
         if (method_exists($this, $getter)) {
             return $this->$getter();
         }
@@ -79,12 +79,12 @@ final class Paciente extends Model
         return $this->_endereco;
     }
 
-    public function setDataNascimento(?string $value): void
+    public function setData_Nascimento(?string $value): void
     {
         $this->_data_nascimento = $value;
     }
 
-    public function getDataNascimento(): ?string
+    public function getData_Nascimento(): ?string
     {
         return $this->_data_nascimento;
     }

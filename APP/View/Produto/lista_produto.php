@@ -278,9 +278,7 @@
                             <tr>
                                 <td><?= $produto->Id ?></td>
                                 <td>
-                                    <a href="/produto/cadastro?id=<?= $produto->Id ?>" class="action-link">
                                         <?= htmlspecialchars($produto->Nome) ?>
-                                    </a>
                                 </td>
                                 <td class="price">R$ <?= number_format($produto->Valor, 2, ',', '.') ?></td>
                                 <td><?= $produto->Quantidade ?> un.</td>
