@@ -112,7 +112,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #5bc0de 100%);
             color: white;
             padding: 12px 24px;
             border: none;
@@ -141,7 +141,7 @@
         }
 
         thead {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #5bc0de 100%);
             color: white;
         }
 
@@ -215,7 +215,7 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #5bc0de 100%);
             display: inline-flex;
             align-items: center;
             justify-content: center;

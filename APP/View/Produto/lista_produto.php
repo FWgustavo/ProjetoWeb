@@ -112,7 +112,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #5bc0de 100%);
             color: white;
             padding: 12px 24px;
             border: none;
@@ -141,7 +141,7 @@
         }
 
         thead {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #5bc0de 100%);
             color: white;
         }
 
@@ -209,33 +209,6 @@
         .empty-state-icon {
             font-size: 64px;
             margin-bottom: 20px;
-        }
-
-        .badge {
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .badge-low {
-            background: #fed7d7;
-            color: #c53030;
-        }
-
-        .badge-ok {
-            background: #c6f6d5;
-            color: #22543d;
-        }
-
-        .badge-warning {
-            background: #feebc8;
-            color: #c05621;
-        }
-
-        .price {
-            font-weight: 600;
-            color: #48bb78;
         }
     </style>
 </head>

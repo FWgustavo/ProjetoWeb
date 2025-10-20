@@ -118,7 +118,7 @@
         }
 
         .welcome-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #5bc0de 100%);
             color: white;
             padding: 60px 40px;
             border-radius: 20px;
