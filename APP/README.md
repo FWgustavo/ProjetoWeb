@@ -1,6 +1,6 @@
-# Sistema de Biblioteca PHP
+# Sistema de Clinica Medica PHP
 
-Este repositório contém um sistema de gerenciamento de biblioteca desenvolvido em PHP, utilizando o padrão de arquitetura MVC (Model-View-Controller).
+Este repositório contém um sistema de gerenciamento de clinica medica desenvolvido em PHP, utilizando o padrão de arquitetura MVC (Model-View-Controller).
 
 ## Tecnologias Utilizadas
 
